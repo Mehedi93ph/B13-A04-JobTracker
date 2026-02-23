@@ -52,6 +52,32 @@
 
         </section>
 
+
+        <section class="bg-white p-4 rounded shadow">
+
+            <header class="flex justify-between items-center mb-4">
+                <h2 class="text-lg font-semibold text-blue-900">Available Jobs</h2>
+                <p id="tabCount" class="text-gray-800 text-base">8 jobs</p>
+            </header>
+
+            <nav class="flex gap-2 mb-6">
+                <button id="allTab" onclick="changeTab('all')" class="px-6 py-1 rounded bg-blue-600 text-white text-sm">
+                    All
+                </button>
+                <button id="interviewTab" onclick="changeTab('interview')"
+                    class="px-3 py-1 rounded bg-gray-200 text-sm">
+                    Interview
+                </button>
+                <button id="rejectedTab" onclick="changeTab('rejected')" class="px-3 py-1 rounded bg-gray-200 text-sm">
+                    Rejected
+                </button>
+            </nav>
+
+        </section>
+
+
+
+
         <script src="script.js"></script>
 </body>
 
