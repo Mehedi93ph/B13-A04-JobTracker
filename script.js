@@ -197,28 +197,6 @@ mainContainer.addEventListener('click', function (event) {
 });
 
 
-// **************** deletion of cards
-
-if (event.target.closest('.btn-delete')) {
-
-  const deleteCard = event.target.closest('.bg-white')
-
-  const companyName =
-    deleteCard.querySelector('.company-name')?.innerText;
-
-  interviewList = interviewList.filter(
-    item => item.companyName !== companyName
-  );
-
-  rejectedList = rejectedList.filter(
-    item => item.companyName !== companyName
-  );
-
-  deleteCard?.remove()
-
-  calculateTotalCount()
-}
-
 
 
 // Render interview list
@@ -264,6 +242,64 @@ function renderInterview() {
 
       <p class="job-info text-gray-600 text-sm mt-3">
         ${interview.jobInfo}
+      </p>
+
+      <div class="flex gap-3 mt-4">
+        <button class="interview-btn px-4 py-2 border border-green-500 text-green-600 rounded-md text-sm">
+          INTERVIEW
+        </button>
+        <button class="rejected-btn px-4 py-2 border border-red-500 text-red-600 rounded-md text-sm">
+          REJECTED
+        </button>
+      </div>
+    `
+    filteredCard.appendChild(div);
+  }
+}
+
+// Render rejected
+
+function renderRejected() {
+
+  filteredCard.innerHTML = '';
+
+  if (rejectedList.length === 0) {
+    emptyState.classList.remove('hidden')
+    return;
+  }
+
+  emptyState.classList.add('hidden')
+
+  for (let rejected of rejectedList) {
+
+    let div = document.createElement('div');
+    div.className = "bg-white p-6 rounded-lg shadow-sm mb-6 mt-6"
+
+    div.innerHTML = `
+      <div class="flex justify-between items-start">
+        <div>
+          <h3 class="company-name text-lg font-bold text-gray-800">
+            ${rejected.companyName}
+          </h3>
+          <p class="job-position text-gray-600 text-sm">
+            ${rejected.jobPosition}
+          </p>
+          <p class="salary-info text-gray-400 text-sm mt-1">
+            ${rejected.salaryInfo}
+          </p>
+        </div>
+
+        <button class="btn-delete text-gray-400 hover:text-red-500 border-red-300 border-2 rounded-full p-1.5">
+          <i class="fa-regular fa-trash-can" style="color: rgb(255, 0, 0);"></i>
+        </button>
+      </div>
+
+      <span class="apply-status inline-block bg-red-200 text-red-900 text-sm px-3 py-1.5 rounded mt-4">
+        REJECTED
+      </span>
+
+      <p class="job-info text-gray-600 text-sm mt-3">
+        ${rejected.jobInfo}
       </p>
 
       <div class="flex gap-3 mt-4">
