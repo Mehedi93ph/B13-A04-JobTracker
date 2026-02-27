@@ -1,14 +1,11 @@
 
 // arrays store job objects
-
 let interviewList = [];
 let rejectedList = [];
 let currentTab = "all";
 
 
-
 // Dom elements
-
 let totalCount = document.getElementById('totalCount');
 let interviewCount = document.getElementById('interviewCount');
 let rejectedCount = document.getElementById('rejectedCount');
@@ -20,7 +17,6 @@ const emptyState = document.getElementById('emptyState')
 const tabCount = document.getElementById('tabCount')
 
 // Update count
-
 function calculateTotalCount() {
 
   // totalCount.innerText = allJobCardsSection.children.length +
@@ -50,7 +46,6 @@ calculateTotalCount();
 
 
 // Tab toggole
-
 const allFilterTab = document.getElementById('allTab');
 const interviewFilterTab = document.getElementById('interviewTab');
 const rejectedFilterTab = document.getElementById('rejectedTab');
@@ -95,7 +90,6 @@ function changeTab(id) {
 
 
 // Event delegations
-
 mainContainer.addEventListener('click', function (event) {
 
   if (event.target.classList.contains('interview-btn')) {
@@ -171,6 +165,116 @@ mainContainer.addEventListener('click', function (event) {
   }
 
 
-  
+  // *** deletion of cards
+
+  if (event.target.closest('.btn-delete')) {
+
+    const deleteCard = event.target.closest('.bg-white')
+
+    const companyName = deleteCard.querySelector('.company-name')?.innerText;
+    interviewList = interviewList.filter(item => item.companyName !== companyName);
+    rejectedList = rejectedList.filter(item => item.companyName !== companyName);
+    deleteCard?.remove()
+    calculateTotalCount()
+
+    if (interviewTab.classList.contains('bg-blue-600')) {
+      renderInterview()
+    }
+
+    if (rejectedTab.classList.contains('bg-blue-600')) {
+      renderRejected()
+    }
+
+    if (allTab.classList.contains('bg-blue-600')) {
+
+      if (allJobCardsSection.children.length === 0) {
+        emptyState.classList.remove('hidden')
+      } else {
+        emptyState.classList.add('hidden')
+      }
+    }
+  }
 });
 
+
+// **************** deletion of cards
+
+if (event.target.closest('.btn-delete')) {
+
+  const deleteCard = event.target.closest('.bg-white')
+
+  const companyName =
+    deleteCard.querySelector('.company-name')?.innerText;
+
+  interviewList = interviewList.filter(
+    item => item.companyName !== companyName
+  );
+
+  rejectedList = rejectedList.filter(
+    item => item.companyName !== companyName
+  );
+
+  deleteCard?.remove()
+
+  calculateTotalCount()
+}
+
+
+
+// Render interview list
+
+function renderInterview() {
+
+  filteredCard.innerHTML = '';
+
+  if (interviewList.length === 0) {
+    emptyState.classList.remove('hidden')
+    return;
+  }
+
+  emptyState.classList.add('hidden')
+
+  for (let interview of interviewList) {
+
+    let div = document.createElement('div');
+    div.className = "bg-white p-6 rounded-lg shadow-sm mb-6 mt-6"
+
+    div.innerHTML = `
+      <div class="flex justify-between items-start">
+        <div>
+          <h3 class="company-name text-lg font-bold text-gray-800">
+            ${interview.companyName}
+          </h3>
+          <p class="job-position text-gray-600 text-sm">
+            ${interview.jobPosition}
+          </p>
+          <p class="salary-info text-gray-400 text-sm mt-1">
+            ${interview.salaryInfo}
+          </p>
+        </div>
+
+        <button class="btn-delete text-gray-400 hover:text-red-500 border-red-300 border-2 rounded-full p-1.5">
+           <i class="fa-regular fa-trash-can" style="color: rgb(255, 0, 0);"></i>
+        </button>
+      </div>
+
+      <span class="apply-status inline-block bg-green-200 text-green-900 text-sm px-3 py-1.5 rounded mt-4">
+        INTERVIEW
+      </span>
+
+      <p class="job-info text-gray-600 text-sm mt-3">
+        ${interview.jobInfo}
+      </p>
+
+      <div class="flex gap-3 mt-4">
+        <button class="interview-btn px-4 py-2 border border-green-500 text-green-600 rounded-md text-sm">
+          INTERVIEW
+        </button>
+        <button class="rejected-btn px-4 py-2 border border-red-500 text-red-600 rounded-md text-sm">
+          REJECTED
+        </button>
+      </div>
+    `
+    filteredCard.appendChild(div);
+  }
+}
